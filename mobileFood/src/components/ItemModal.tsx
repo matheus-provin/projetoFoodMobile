@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Modal } from 'react-native';
-
+import React, { useState } from "react";
+import { View, Text, Button, StyleSheet, Modal, TouchableOpacity } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 type FoodMenuModalProps = {
   visible: boolean;
@@ -9,7 +9,12 @@ type FoodMenuModalProps = {
   properties: string[];
 };
 
-const FoodMenuModal: React.FC<FoodMenuModalProps> = ({ visible, onClose, item, properties }) => {
+const FoodMenuModal: React.FC<FoodMenuModalProps> = ({
+  visible,
+  onClose,
+  item,
+  properties,
+}) => {
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
 
   const handlePropertyToggle = (property: string) => {
@@ -26,10 +31,19 @@ const FoodMenuModal: React.FC<FoodMenuModalProps> = ({ visible, onClose, item, p
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>{item}</Text>
           {properties.map((property, index) => (
-            <View key={index} style={styles.propertyContainer}>
-                
+            <TouchableOpacity
+              key={index}
+              style={styles.propertyContainer}
+              onPress={() => handlePropertyToggle(property)}
+            >
+              <Feather
+                name={selectedProperties.includes(property) ? "check-square" : "square"}
+                size={24}
+                color="black"
+                style={styles.checkboxIcon}
+              />
               <Text style={styles.propertyText}>{property}</Text>
-            </View>
+            </TouchableOpacity>
           ))}
           <Button title="Close Modal" onPress={onClose} />
         </View>
@@ -41,27 +55,31 @@ const FoodMenuModal: React.FC<FoodMenuModalProps> = ({ visible, onClose, item, p
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: '80%',
-    height: '90%',
-    backgroundColor: '#FFF',
+    width: "80%",
+    height: "90%",
+    backgroundColor: "#FFF",
     padding: 20,
     borderRadius: 10,
     elevation: 5,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
     marginBottom: 10,
   },
   propertyContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
+  },
+  checkboxIcon: {
+    marginRight: 10,
   },
   propertyText: {
     fontSize: 16,

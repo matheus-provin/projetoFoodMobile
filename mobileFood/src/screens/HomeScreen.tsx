@@ -8,6 +8,7 @@ import Swiper from "react-native-swiper";
 import ScrollableTextBox from "../components/Categorias";
 import FoodItem from "../components/ItemCardapio";
 import FoodMenuModal from "../components/ItemModal";
+import { foodItems } from "../components/FoodItems";
 
 type HomeScreenProps = {
   navigation: any; // You can define a proper type for navigation
@@ -16,8 +17,9 @@ type HomeScreenProps = {
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
+  const [selectedTag, setSelectedTag] = useState("Todos");
 
-  const handleItemPress = (item: string) => {
+  const handleItemPress = (item: string, tag: string) => {
     setSelectedItem(item);
     setModalVisible(true);
   };
@@ -30,6 +32,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     console.log(`Clicked: ${item}`);
   };
 
+  const handleTagClick = (tag: string) => {
+    setSelectedTag(tag);
+  };
+
   const categorias = [
     "Todos",
     "Bebidas",
@@ -38,6 +44,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     "Salgados",
     "Outros",
   ];
+
+  
+
+  const filteredFoodItems =
+    selectedTag === "Todos"
+      ? foodItems
+      : foodItems.filter((item) => item.tag === selectedTag);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -54,37 +67,21 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           <Text style={styles.title}>Cardápio Digital</Text>
           <ScrollableTextBox
             categorias={categorias}
-            onTextClick={handleTextClick}
+            onTextClick={handleTagClick}
+            selected={selectedTag}
           />
           <View>
-            <FoodItem
-              title="Pizza"
-              photo="https://blog.ceraflame.com.br/wp-content/uploads/2021/06/Pizza-Napolitana-CERAFLAME-480x270.jpg"
-              description="Pizza de queijo, calabresa e tomate"
-              price="R$15"
-              onPress={() => handleItemPress("Pizza")}
-            />
-            <FoodItem
-              title="Hamburguer"
-              photo="https://classic.exame.com/wp-content/uploads/2020/05/Vinil-Burger.jpg?quality=70&strip=info&w=1024"
-              description="Hamburguer com cebola"
-              price="R$155"
-              onPress={() => handleItemPress("Hamburguer")}
-            />
-            <FoodItem
-              title="Sushi"
-              photo="https://www.ufrgs.br/laranjanacolher/wp-content/uploads/2021/08/1.png"
-              description="Sushi irado"
-              price="R$15"
-              onPress={() => handleItemPress("Sushi")}
-            />
-            <FoodItem
-              title="Xis"
-              photo="https://www.rbsdirect.com.br/imagesrc/35719497.jpg?w=1024&h=1024&a=c"
-              description="Xis tudo de bom"
-              price="R$15"
-              onPress={() => handleItemPress("Xis")}
-            />
+            {filteredFoodItems.map((item, index) => (
+              <FoodItem
+                key={index}
+                tag={item.tag}
+                title={item.title}
+                photo={item.photo}
+                description={item.description}
+                price={item.price}
+                onPress={() => handleItemPress(item.title, item.tag)}
+              />
+            ))}
           </View>
         </View>
       </ScrollView>

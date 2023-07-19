@@ -1,20 +1,33 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import ButtonWithIcon from "../components/ButtonWithIcon";
 
-type ProfileScreenProps = {
-  navigation: any; // You can define a proper type for navigation
-};
-    
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
+const ProfileScreen: React.FC = () => {
+  const handleButtonPress = () => {
+    console.log("Button pressed");
+  };
+
   return (
-    <View>
-      <Text>Details Screen</Text>
-      <Button
-        title="Go back"
-        onPress={() => navigation.goBack()}
-      />
+    <View style={styles.container}>
+      <ButtonWithIcon icon="user" title="Editar Perfil" onPress={handleButtonPress} />
+      <ButtonWithIcon icon="map" title="Endereços" onPress={handleButtonPress} />
+      <ButtonWithIcon icon="credit-card" title="Pagamento" onPress={handleButtonPress} />
+      <ButtonWithIcon icon="log-out" title="Sair" onPress={handleButtonPress} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+});
 
 export default ProfileScreen;

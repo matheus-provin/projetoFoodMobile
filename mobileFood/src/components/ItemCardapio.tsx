@@ -4,6 +4,7 @@ import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 type FoodItemProps = {
   title: string;
   photo: string;
+  tag: string;
   description: string;
   price: string;
   onPress: () => void;
