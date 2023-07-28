@@ -68,7 +68,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           <ScrollableTextBox
             categorias={categorias}
             onTextClick={handleTagClick}
-            selected={selectedTag}
           />
           <View>
             {filteredFoodItems.map((item, index) => (
